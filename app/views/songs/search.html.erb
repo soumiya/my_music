@@ -1,0 +1,40 @@
+
+<%= form_tag(search_songs_path, :method => :get) do -%>
+  <%= label_tag(:query, "Search for:") %>
+  <%= text_field_tag(:query) %>
+  <%= submit_tag("Search") %>
+<% end -%>
+
+<%=link_to "Back to my list",root_path %>
+
+<section id="search_results">
+
+<%- if @songs.length > 0 -%>
+ <h4><%="Search for '#{params[:query]}' returned #{@songs.length} tracks"%></h4>
+<%= form_tag(add_multiple_songs_path,:method => :post)  do -%>
+   <%- for song in @songs -%>
+    <article>
+      <h4>
+       <%=check_box_tag "track_ids[]", song.track_id %>
+       <%=link_to song.track_name,song.track_view_url,:target =>'_blank' %>
+      <%=image_tag(song.cover_url)%> 
+      <ul>
+         <li>Artist: <%=song.artist_name%></li>
+         <li>Genre: <%=song.genre%></li>
+      </ul>
+    </article>
+  <%- end -%>
+<%= submit_tag "add to my song list"%>
+<%end-%>
+
+<%-else-%>
+  <article>
+     No Search Results
+  </article>
+
+<%-end-%>
+
+</section>
+
+
+           

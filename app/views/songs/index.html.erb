@@ -1,0 +1,30 @@
+<%title('My Song List')%>
+<%=link_to "Add songs",search_songs_path %>
+
+<section id="search_results">
+   
+   <%- if @songs.length > 0 -%>
+        <%=link_to "Share my playlist ",social_share_path(current_user.username),:target => '_blank'%>
+      <%= form_tag(delete_multiple_songs_path,:method => :delete)  do -%>
+          <%- for song in @songs -%>
+             <article>
+                <h4>
+                   <%=check_box_tag "ids[]", song.id %>
+                   <%=link_to song.track_name,song.track_view_url,:target =>'_blank' %>
+                </h4>
+                <%=image_tag(song.cover_url)%>
+               <ul>
+                  <li>Artist: <%=song.artist_name%></li>
+                  <li>Genre: <%=song.genre%></li>
+               </ul>
+             </article>
+          <%- end -%>
+          <%= submit_tag "Delete from my list"%>
+       <%end-%>
+   <%-else-%>
+         <article>
+             Your song list is empty :( . 
+         </article>
+   <%-end-%>
+</section>
+
